@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>ABC Shoes - Giày Nữ</title>
+  <link href="../CSS/bootstrap.min.css" rel="stylesheet" />
+  <link href="../CSS/all.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../CSS/css.css" />
+  <script src="../JS/bootstrap.bundle.min.js"></script>
+  <script src="../JS/js.js"></script>
+</head>
+
+<body>
+  <header class="fixed-top border-bottom bg-white">
+    <div class="container-fluid d-flex justify-content-between align-items-center py-3 px-4">
+      <div class="d-flex align-items-center">
+        <button class="btn btn-outline-secondary d-lg-none me-2" type="button" data-bs-toggle="offcanvas"
+          data-bs-target="#mobileMenu">
+          ☰
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          <img src="../IMAGE/logo.png" alt="Logo" class="logo" height="50" />
+        </a>
+      </div>
+
+      <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileMenu">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title">Menu</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="gia_uu_dai.html">GIÁ ƯU ĐÃI</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="giay_nam.html">GIÀY NAM</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="giay_nu.html">GIÀY NỮ</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="dep_nam.html">DÉP NAM</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="dep_nu.html">DÉP NỮ</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="san_pham_ban_chay.html">SẢN PHẨM BÁN CHẠY</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="collapse" data-bs-target="#submenu">PHỤ
+                KIỆN</a>
+              <div id="submenu" class="collapse">
+                <a class="nav-link" href="vo.html">Vớ</a>
+                <a class="nav-link" href="chai_ve_sinh_giay.html">Chai Vệ Sinh Giày</a>
+                <a class="nav-link" href="day_giay.html">Dây Giày</a>
+                <a class="nav-link" href="de_lot.html">Đế Lót</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <nav class="navbar navbar-expand-lg navbar-light w-100 d-none d-lg-block">
+        <div class="container-fluid">
+          <ul class="navbar-nav d-flex flex-row justify-content-start">
+            <li class="nav-item">
+              <a class="nav-link mx-3" href="gia_uu_dai.html">GIÁ ƯU ĐÃI</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link mx-3" href="giay_nam.html">GIÀY NAM</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link mx-3" href="giay_nu.html">GIÀY NỮ</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link mx-3" href="dep_nam.html">DÉP NAM</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link mx-3" href="dep_nu.html">DÉP NỮ</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link mx-3" href="san_pham_ban_chay.html">SẢN PHẨM BÁN CHẠY</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle mx-3" href="#" data-bs-toggle="dropdown">PHỤ KIỆN</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="vo.html">Vớ</a></li>
+                <li>
+                  <a class="dropdown-item" href="chai_ve_sinh_giay.html">Chai Vệ Sinh Giày</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="day_giay.html">Dây Giày</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="de_lot.html">Đế Lót</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <div class="d-flex align-items-center">
+        <input class="form-control me-2" placeholder="Tìm kiếm" type="text" />
+        <a href="#" class="text-dark"><i class="fas fa-search"></i></a>
+        <a href="dang_nhap.html" class="text-dark ms-2"><i class="fas fa-user"></i></a>
+        <a href="danh_sach_dang_ky.html" class="text-dark ms-2"><i class="fas fa-users"></i></a>
+        <a href="#" class="text-dark ms-2" id="cart-toggle"><i class="fas fa-shopping-cart"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container py-5" style="margin-top: 80px">
+    <!-- Modal hiển thị chi tiết sản phẩm -->
+    <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title w-100 text-center" id="productModalLabel">
+              Thông tin sản phẩm
+            </h3>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="productModalBody">
+            <!-- Nội dung sản phẩm sẽ được cập nhật bằng JavaScript -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex align-items-center mb-4">
+      <hr class="flex-grow-1 mx-3" />
+      <h2 class="text-center fw-bold fade-in">GIÀY NỮ</h2>
+      <hr class="flex-grow-1 mx-3" />
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div class="d-flex align-items-center">
+        <i class="fas fa-filter"></i>
+        <span class="ms-2">BỘ LỌC</span>
+      </div>
+      <div class="d-flex align-items-center">
+        <span class="me-2">Sắp xếp theo:</span>
+        <select class="form-select w-auto">
+          <option value="default">Chọn tiêu chí</option>
+          <option value="price-asc">Giá thấp đến cao</option>
+          <option value="price-desc">Giá cao đến thấp</option>
+          <option value="name-asc">Tên A → Z</option>
+          <option value="name-desc">Tên Z → A</option>
+          <option value="newest">Mới nhất</option>
+          <option value="bestseller">Bán chạy nhất</option>
+          <option value="discount">Giảm giá nhiều nhất</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-3 col-6 border p-3 product-item">
+        <img class="img-fluid product-image fade-scale" src="../IMAGE/giaynu/giaynu1.png"
+          alt="Giày Sneaker Nữ Urban Chic" data-name="Giày Sneaker Nữ Urban Chic" data-price="376000"
+          data-category="giay_nu"
+          data-description="Giày sneaker nữ phong cách thành thị, thiết kế năng động, chất liệu thoáng khí, phù hợp cho hoạt động hàng ngày." />
+        <p class="mt-2">Giày Sneaker Nữ Urban Chic</p>
+        <p class="fw-bold">376,000 đ</p>
+      </div>
+
+      <div class="col-lg-3 col-6 border p-3 product-item">
+        <img class="img-fluid product-image fade-scale" src="../IMAGE/giaynu/giaynu2.png"
+          alt="Giày Thể Thao Nữ Basic Comfort" data-name="Giày Thể Thao Nữ Basic Comfort" data-price="450000"
+          data-category="giay_nu"
+          data-description="Giày thể thao nữ kiểu dáng cơ bản, êm ái, dễ phối đồ, thích hợp cho tập luyện nhẹ và đi dạo." />
+        <p class="mt-2">Giày Thể Thao Nữ Basic Comfort</p>
+        <p class="fw-bold">450,000 đ</p>
+      </div>
+      <div class="col-lg-3 col-6 border p-3 product-item">
+        <img class="img-fluid product-image fade-scale" src="../IMAGE/giaynu/giaynu3.png"
+          alt="Giày Chạy Bộ Nữ Light Run" data-name="Giày Chạy Bộ Nữ Light Run" data-price="520000"
+          data-category="giay_nu"
+          data-description="Giày chạy bộ nữ siêu nhẹ, thoáng khí, hỗ trợ tối đa cho các buổi chạy bộ và tập luyện cường độ cao." />
+        <p class="mt-2">Giày Chạy Bộ Nữ Light Run</p>
+        <p class="fw-bold">520,000 đ</p>
+      </div>
+      <div class="col-lg-3 col-6 border p-3 product-item">
+        <img class="img-fluid product-image fade-scale" src="../IMAGE/giaynu/giaynu4.png" alt="Giày Tennis Nữ Ace Pro"
+          data-name="Giày Tennis Nữ Ace Pro" data-price="600000" data-category="giay_nu"
+          data-description="Giày tennis nữ chuyên nghiệp, độ bám sân tốt, hỗ trợ di chuyển linh hoạt, phù hợp cho các trận đấu tennis." />
+        <p class="mt-2">Giày Tennis Nữ Ace Pro</p>
+        <p class="fw-bold">600,000 đ</p>
+      </div>
+
+      <div class="col-lg-3 col-6 border p-3 product-item">
+        <img class="img-fluid product-image fade-scale" src="../IMAGE/giaynu/giaynu5.png"
+          alt="Giày Sneaker Nữ Biti's Hunter X Fresh" data-name="Giày Sneaker Nữ Biti's Hunter X Fresh"
+          data-price="1099000" data-category="giay_nu"
+          data-description="Giày sneaker nữ Biti's Hunter X Fresh, thiết kế thời trang, công nghệ đế LiteFlex 2.0 êm ái, thoáng khí." />
+        <p class="mt-2">Giày Sneaker Nữ Biti's Hunter X Fresh</p>
+        <p class="fw-bold">1,099,000 đ</p>
+      </div>
+
+      <div class="col-lg-3 col-6 border p-3 product-item">
+        <img class="img-fluid product-image fade-scale" src="../IMAGE/giaynu/giaynu6.png"
+          alt="Giày Thể Thao Nữ Biti's Street Art" data-name="Giày Thể Thao Nữ Biti's Street Art" data-price="1199000"
+          data-category="giay_nu"
+          data-description="Giày thể thao nữ Biti's Street Art, họa tiết độc đáo, phong cách đường phố, chất liệu bền bỉ." />
+        <p class="mt-2">Giày Thể Thao Nữ Biti's Street Art</p>
+        <p class="fw-bold">1,199,000 đ</p>
+      </div>
+      <div class="col-lg-3 col-6 border p-3 product-item">
+        <img class="img-fluid product-image fade-scale" src="../IMAGE/giaynu/giaynu7.png"
+          alt="Giày Sneaker Nữ Biti's Everyday" data-name="Giày Sneaker Nữ Biti's Everyday" data-price="700000"
+          data-category="giay_nu"
+          data-description="Giày sneaker nữ Biti's Everyday, thiết kế đơn giản, thoải mái, phù hợp cho mọi hoạt động hàng ngày." />
+        <p class="mt-2">Giày Sneaker Nữ Biti's Everyday</p>
+        <p class="fw-bold">700,000 đ</p>
+      </div>
+      <div class="col-lg-3 col-6 border p-3 product-item">
+        <img class="img-fluid product-image fade-scale" src="../IMAGE/giaynu/giaynu8.png"
+          alt="Giày Sneaker Nữ Biti's Hunter Street Dance" data-name="Giày Sneaker Nữ Biti's Hunter Street Dance"
+          data-price="829000" data-category="giay_nu"
+          data-description="Giày sneaker nữ Biti's Hunter Street Dance, thiết kế năng động, hỗ trợ tốt cho các bước nhảy, phong cách cá tính." />
+        <p class="mt-2">Giày Sneaker Nữ Biti's Hunter Street Dance</p>
+        <p class="fw-bold">829,000 đ</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Giỏ hàng -->
+  <div class="cart" id="cart">
+    <div class="cart-header pt-2">
+      <h5>Giỏ Hàng</h5>
+      <button class="btn-close" id="cart-close"></button>
+    </div>
+    <div class="cart-body" id="cart-body">
+      <p class="cart-empty pt-2">Giỏ hàng của bạn trống.</p>
+    </div>
+    <div class="cart-footer">
+      <strong>Tổng: <span id="cart-total">0</span> đ</strong>
+      <button class="btn btn-primary float-end" id="checkout-btn">
+        Thanh toán
+      </button>
+    </div>
+  </div>
+
+  <footer class="bg-dark text-white py-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">
+          <h3 class="fw-bold">Về ABC Shoes</h3>
+          <p>
+            <strong>ABC Shoes</strong> là thương hiệu giày dép hàng đầu, cung cấp các mẫu giày thời trang,
+            chất lượng cao với giá cả hợp lý. Cam kết mang đến trải nghiệm mua sắm tốt nhất cho khách hàng.
+          </p>
+        </div>
+
+        <div class="col-md-3">
+          <h3 class="fw-bold">Liên Hệ</h3>
+          <p><i class="fas fa-map-marker-alt me-2"></i> 12 Nguyễn Văn Bảo, Phường 4, Quận Gò Vấp, TP.HCM</p>
+          <p><i class="fas fa-phone me-2"></i> 0909 123 456</p>
+          <p><i class="fas fa-envelope me-2"></i> support@abcshoes.vn</p>
+        </div>
+
+        <div class="col-md-3">
+          <h3 class="fw-bold">Hỗ Trợ Khách Hàng</h3>
+          <ul class="list-unstyled">
+            <li><a class="text-white" href="#"><i class="fas fa-shield-alt me-2"></i> Chính sách bảo hành</a></li>
+            <li><a class="text-white" href="#"><i class="fas fa-exchange-alt me-2"></i> Chính sách đổi trả</a></li>
+            <li><a class="text-white" href="#"><i class="fas fa-shipping-fast me-2"></i> Chính sách vận chuyển</a></li>
+            <li><a class="text-white" href="#"><i class="fas fa-question-circle me-2"></i> Câu hỏi thường gặp</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-3">
+          <h3 class="fw-bold">Kết Nối Với Chúng Tôi</h3>
+          <div class="d-flex">
+            <a class="text-white me-3 fs-4" href="#"><i class="fab fa-facebook-f"></i></a>
+            <a class="text-white me-3 fs-4" href="#"><i class="fab fa-instagram"></i></a>
+            <a class="text-white me-3 fs-4" href="#"><i class="fab fa-twitter"></i></a>
+            <a class="text-white fs-4" href="#"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-top pt-2 text-center">
+        <p class="mb-0 fst-italic">© 2025 ABC Shoes. All rights reserved. | Thiết kế bởi Nhóm 15 - Bài Tập Lớn
+          Hệ thống Công nghệ Web
+        </p>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>

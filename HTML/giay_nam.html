@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>ABC Shoes - Giày Nam</title>
+  <link href="../CSS/bootstrap.min.css" rel="stylesheet" />
+  <link href="../CSS/all.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../CSS/css.css" />
+  <script src="../JS/bootstrap.bundle.min.js"></script>
+  <script src="../JS/js.js"></script>
+</head>
+
+<body>
+  <header class="fixed-top border-bottom bg-white">
+    <div class="container-fluid d-flex justify-content-between align-items-center py-3 px-4">
+      <div class="d-flex align-items-center">
+        <button class="btn btn-outline-secondary d-lg-none me-2" type="button" data-bs-toggle="offcanvas"
+          data-bs-target="#mobileMenu">
+          ☰
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          <img src="../IMAGE/logo.png" alt="Logo" class="logo" height="50" />
+        </a>
+      </div>
+
+      <div class="offcanvas offcanvas-start" tabindex="-1" id="mobileMenu">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title">Menu</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="gia_uu_dai.html">GIÁ ƯU ĐÃI</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="giay_nam.html">GIÀY NAM</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="giay_nu.html">GIÀY NỮ</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="dep_nam.html">DÉP NAM</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="dep_nu.html">DÉP NỮ</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="san_pham_ban_chay.html">SẢN PHẨM BÁN CHẠY</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="collapse" data-bs-target="#submenu">PHỤ
+                KIỆN</a>
+              <div id="submenu" class="collapse">
+                <a class="nav-link" href="vo.html">Vớ</a>
+                <a class="nav-link" href="chai_ve_sinh_giay.html">Chai Vệ Sinh Giày</a>
+                <a class="nav-link" href="day_giay.html">Dây Giày</a>
+                <a class="nav-link" href="de_lot.html">Đế Lót</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <nav class="navbar navbar-expand-lg navbar-light w-100 d-none d-lg-block">
+        <div class="container-fluid">
+          <ul class="navbar-nav d-flex flex-row justify-content-start">
+            <li class="nav-item">
+              <a class="nav-link mx-3" href="gia_uu_dai.html">GIÁ ƯU ĐÃI</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link mx-3" href="giay_nam.html">GIÀY NAM</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link mx-3" href="giay_nu.html">GIÀY NỮ</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link mx-3" href="dep_nam.html">DÉP NAM</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link mx-3" href="dep_nu.html">DÉP NỮ</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link mx-3" href="san_pham_ban_chay.html">SẢN PHẨM BÁN CHẠY</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle mx-3" href="#" data-bs-toggle="dropdown">PHỤ KIỆN</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="vo.html">Vớ</a></li>
+                <li>
+                  <a class="dropdown-item" href="chai_ve_sinh_giay.html">Chai Vệ Sinh Giày</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="day_giay.html">Dây Giày</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="de_lot.html">Đế Lót</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <div class="d-flex align-items-center">
+        <input class="form-control me-2" placeholder="Tìm kiếm" type="text" />
+        <a href="#" class="text-dark"><i class="fas fa-search"></i></a>
+        <a href="dang_nhap.html" class="text-dark ms-2"><i class="fas fa-user"></i></a>
+        <a href="danh_sach_dang_ky.html" class="text-dark ms-2"><i class="fas fa-users"></i></a>
+        <a href="#" class="text-dark ms-2" id="cart-toggle"><i class="fas fa-shopping-cart"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container py-5" style="margin-top: 80px">
+    <!-- Modal hiển thị chi tiết sản phẩm -->
+    <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title w-100 text-center" id="productModalLabel">
+              Thông tin sản phẩm
+            </h3>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="productModalBody">
+            <!-- Nội dung sản phẩm sẽ được cập nhật bằng JavaScript -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex align-items-center mb-4">
+      <hr class="flex-grow-1 mx-3" />
+      <h2 class="text-center fw-bold fade-in">GIÀY NAM</h2>
+      <hr class="flex-grow-1 mx-3" />
+    </div>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div class="d-flex align-items-center">
+        <i class="fas fa-filter"></i>
+        <span class="ms-2">BỘ LỌC</span>
+      </div>
+      <div class="d-flex align-items-center">
+        <span class="me-2">Sắp xếp theo:</span>
+        <select class="form-select w-auto">
+          <option value="default">Chọn tiêu chí</option>
+          <option value="price-asc">Giá thấp đến cao</option>
+          <option value="price-desc">Giá cao đến thấp</option>
+          <option value="name-asc">Tên A → Z</option>
+          <option value="name-desc">Tên Z → A</option>
+          <option value="newest">Mới nhất</option>
+          <option value="bestseller">Bán chạy nhất</option>
+          <option value="discount">Giảm giá nhiều nhất</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row ">
+      <!-- Sản phẩm 5 -->
+      <div class="col-lg-3 col-6 border p-3 product-item">
+        <img class="img-fluid product-image fade-scale" src="../IMAGE/giaynam/duramo.jpg"
+          alt="Giày Adidas Nam Chính Hãng - DURAMO" data-name="Giày Adidas Nam Chính Hãng - DURAMO" data-price="1791000"
+          data-description="Giày adidas Duramo Speed là mẫu giày thể thao vừa ra mắt của adidas có thiết kế đẹp, công nghệ cao phù hợp cho tất cả mọi người. Chắc chắn adidas Duramo Speed sẽ được rất nhiều người yêu thích và sử dụng."
+          data-category="giay_nam" />
+        <p class="mt-2">Giày Adidas Nam Chính Hãng - DURAMO</p>
+        <div class="d-flex justify-content-between align-items-center">
+          <p class="price mb-0">
+            <s class="text-muted">1,990,000 đ</s>
+            <span class="fw-bold text-danger">1,791,000 đ</span>
+          </p>
+          <span class="badge bg-danger text-white p-2 ms-2">-10%</span>
+        </div>
+      </div>
+
+      <!-- Sản phẩm 6 -->
+      <div class="col-lg-3 col-6 border p-3 product-item">
+        <img class="img-fluid product-image fade-scale" src="../IMAGE/giaynam/lacostecarnaby.jpg"
+          alt="Giày Lacoste Carnaby Pro CGR 124 Nam - Trắng Đen"
+          data-name="Giày Lacoste Carnaby Pro CGR 124 Nam - Trắng Đen" data-price="2231000"
+          data-description="Giày Lacoste Carnaby Pro 124 CGR là mẫu giày Lacoste mới có thiết kế cực đẹp, sang trọng và tinh tế đặc trưng của thương hiệu đến từ Pháp. Được làm từ chất liệu da cao cấp Lacoste Carnaby Pro 124 CGR là lựa chọn tuyệt vời cho các quý ông."
+          data-category="giay_nam" />
+        <p class="mt-2">Giày Lacoste Carnaby Pro CGR 124 Nam</p>
+        <div class="d-flex justify-content-between align-items-center">
+          <p class="price mb-0">
+            <s class="text-muted">2,790,000 đ</s>
+            <span class="fw-bold text-danger">2,231,000 đ</span>
+          </p>
+          <span class="badge bg-danger text-white p-2 ms-2">-20%</span>
+        </div>
+      </div>
+
+      <!-- Sản phẩm 7 -->
+      <div class="col-lg-3 col-6 border p-3 product-item">
+        <img class="img-fluid product-image fade-scale" src="../IMAGE/giaynam/nikepegasus.jpg"
+          alt="Giày Nam Nike Pegasus 41" data-name="Giày Nam Nike Pegasus 41" data-price="3420000"
+          data-description="Đệm phản ứng trong Pegasus mang đến một chuyến đi tràn đầy năng lượng cho việc chạy bộ đường trường hàng ngày. Trải nghiệm khả năng phục hồi năng lượng nhẹ hơn với các đơn vị Air Zoom kép và đế giữa bằng bọt ReactX. Thêm vào đó, lưới kỹ thuật cải tiến ở phần trên giúp giảm trọng lượng và tăng khả năng thoáng khí."
+          data-category="giay_nam" />
+        <p class="mt-2">Giày Nam Nike Pegasus 41</p>
+        <div class="d-flex justify-content-between align-items-center">
+          <p class="price mb-0">
+            <s class="text-muted">3,800,000 đ</s>
+            <span class="fw-bold text-danger">3,420,000 đ</span>
+          </p>
+          <span class="badge bg-danger text-white p-2 ms-2">-10%</span>
+        </div>
+      </div>
+
+      <!-- Sản phẩm 8 -->
+      <div class="col-lg-3 col-6 border p-3 product-item">
+        <img class="img-fluid product-image fade-scale" src="../IMAGE/giaynam/nikestructure.jpg"
+          alt="Giày Nam Nike Structure 25" data-name="Giày Nam Nike Structure 25" data-price="2800000"
+          data-description="Đệm hỗ trợ cung cấp sự ổn định cho các lần chạy hàng ngày. Trải nghiệm một nền tảng ổn định mà không ảnh hưởng đến hiệu suất với sự kết hợp của bọt Cushlon 3.0 và một đơn vị Zoom Air. Thêm vào đó, chiều cao chồng cao hơn giúp giày thoải mái, ổn định và hỗ trợ hơn bao giờ hết."
+          data-category="giay_nam" />
+        <p class="mt-2">Giày Nam Nike Structure 25</p>
+        <div class="d-flex justify-content-between align-items-center">
+          <p class="price mb-0">
+            <s class="text-muted">3,500,000 đ</s>
+            <span class="fw-bold text-danger">2,800,000 đ</span>
+          </p>
+          <span class="badge bg-danger text-white p-2 ms-2">-20%</span>
+        </div>
+      </div>
+
+      <!-- Sản phẩm 9 -->
+      <div class="col-lg-3 col-6 border p-3 product-item">
+        <img class="img-fluid product-image fade-scale" src="../IMAGE/giaynam/runfacon5.jpg"
+          alt="Giày Adidas Nam Runfalcon 5" data-name="Giày Adidas Nam Runfalcon 5" data-price="2990000"
+          data-description="Từ đường chạy điền kinh tới máy chạy bộ, hãy chạm tới mục tiêu của bạn với đôi giày chạy bộ adidas này. Đế giữa Cloudfoam êm ái cho cảm giác mềm mại và nâng đỡ ngay khi vừa xỏ chân vào giày. Với thân giày bằng vải lưới thoáng khí và đế ngoài Adiwear bền bỉ, đôi giày trainer ưa thích này là lựa chọn hoàn hảo để mang cả ngày."
+          data-category="giay_nam" />
+        <p class="mt-2">Giày Adidas Nam Runfalcon 5</p>
+        <p class="fw-bold">2,990,000 đ</p>
+      </div>
+
+      <!-- Sản phẩm 10 -->
+      <div class="col-lg-3 col-6 border p-3 product-item">
+        <img class="img-fluid product-image fade-scale" src="../IMAGE/giaynam/ultrarun5.jpg"
+          alt="Giày adidas Ultrarun 5 Nam" data-name="Giày adidas Ultrarun 5 Nam" data-price="2200000"
+          data-description="Hãy chạy xa hơn một chút và nhanh hơn một chút với mỗi bước chạy. Đôi giày chạy bộ adidas này hỗ trợ bạn tiến gần hơn đến mục tiêu nhờ cảm giác đàn hồi từ lớp đệm Bounce 2.0 nhẹ dưới chân. Phần upper bằng lưới giúp đôi chân luôn thoáng mát và thoải mái từ đầu đến cuối, cùng đế ngoài có độ bám tốt, mang lại sự tự tin khi bạn xây dựng sức bền. Sản phẩm này có ít nhất 20% chất liệu tái chế"
+          data-category="giay_nam" />
+        <p class="mt-2">Giày adidas Ultrarun 5 Nam</p>
+        <p class="fw-bold">2,200,000 đ</p>
+      </div>
+
+      <!-- Sản phẩm 11 -->
+      <div class="col-lg-3 col-6 border p-3 product-item">
+        <img class="img-fluid product-image fade-scale" src="../IMAGE/giaynam/samba.png" alt="Giày Nam Giày Samba OG"
+          data-name="Giày Nam Giày Samba OG" data-price="2800000"
+          data-description="Ra đời trên sân bóng, giày Samba là biểu tượng kinh điển của phong cách đường phố. Phiên bản này trung thành với di sản, thể hiện qua thân giày bằng da mềm, dáng thấp, nhã nhặn, các chi tiết phủ ngoài bằng da lộn và đế gum, biến đôi giày trở thành item không thể thiếu trong tủ đồ của tất cả mọi người - cả trong và ngoài sân cỏ."
+          data-category="giay_nam" />
+        <p class="mt-2">Giày Nam Giày Samba OG</p>
+        <p class="fw-bold">2,800,000 đ</p>
+      </div>
+
+      <!-- Sản phẩm 12 -->
+      <div class="col-lg-3 col-6 border p-3 product-item">
+        <img class="img-fluid product-image fade-scale" src="../IMAGE/giaynam/forum.png"
+          alt="Giày Nam Giày Forum Low CL" data-name="Giày Nam Giày Forum Low CL" data-price="2600000"
+          data-description="Đôi giày adidas Forum Low CL này cân bằng hoàn hảo giữa phong cách laid-back và retro. Bạn sẽ thấy thoải mái không thôi nhờ thân giày bằng da cao cấp và lót giày bằng vải dệt mềm mại. Đôi giày đa năng này là một item không thể thiếu vắng."
+          data-category="giay_nam" />
+        <p class="mt-2">Giày Nam Giày Forum Low CL</p>
+        <p class="fw-bold">2,600,000 đ</p>
+      </div>
+
+      <!-- Sản phẩm 1 -->
+      <div class="col-lg-3 col-6 border p-3 product-item">
+        <img class="img-fluid product-image fade-scale" src="../IMAGE/giaynam/giaynam1.png" alt="Giày Nam ABC 1234"
+          data-name="Giày Nam ABC 1234" data-price="337200"
+          data-description="Giày thể thao nam ABC, chất liệu cao cấp, thoải mái và bền đẹp." data-category="giay_nam" />
+        <p class="mt-2">Giày Thể Thao Thông Dụng Nam ABC</p>
+        <div class="d-flex justify-content-between align-items-center">
+          <p class="price mb-0">
+            <s class="text-muted">500,000 đ</s>
+            <span class="fw-bold text-danger">337,200 đ</span>
+          </p>
+          <span class="badge bg-danger text-white p-2 ms-2">-25%</span>
+        </div>
+      </div>
+
+      <!-- Sản phẩm 2 -->
+      <div class="col-lg-3 col-6 border p-3 product-item">
+        <img class="img-fluid product-image fade-scale" src="../IMAGE/giaynam/giaynam2.png" alt="Giày Nam ABC 5678"
+          data-name="Giày Nam ABC 5678" data-price="382500"
+          data-description="Giày thể thao nam ABC Basic, thiết kế đơn giản, phù hợp với mọi phong cách."
+          data-category="giay_nam" />
+        <p class="mt-2">Giày Thể Thao Nam ABC Basic</p>
+        <div class="d-flex justify-content-between align-items-center">
+          <p class="price mb-0">
+            <s class="text-muted">450,000 đ</s>
+            <span class="fw-bold text-danger">382,500 đ</span>
+          </p>
+          <span class="badge bg-danger text-white p-2 ms-2">-15%</span>
+        </div>
+      </div>
+
+      <!-- Sản phẩm 3 -->
+      <div class="col-lg-3 col-6 border p-3 product-item">
+        <img class="img-fluid product-image fade-scale" src="../IMAGE/giaynam/giaynam3.png" alt="Giày Nam ABC 9101"
+          data-name="Giày Nam ABC 9101" data-price="400000"
+          data-description="Giày thể thao nam ABC cao cấp, bền đẹp và phong cách." data-category="giay_nam" />
+        <p class="mt-2">Giày Thể Thao Nam ABC Cao Cấp</p>
+        <div class="d-flex justify-content-between align-items-center">
+          <p class="price mb-0">
+            <s class="text-muted">500,000 đ</s>
+            <span class="fw-bold text-danger">400,000 đ</span>
+          </p>
+          <span class="badge bg-danger text-white p-2 ms-2">-20%</span>
+        </div>
+      </div>
+
+      <!-- Sản phẩm 4 -->
+      <div class="col-lg-3 col-6 border p-3 product-item">
+        <img class="img-fluid product-image fade-scale" src="../IMAGE/giaynam/giaynam4.png" alt="Giày Nam ABC 1121"
+          data-name="Giày Nam ABC 1121" data-price="300000"
+          data-description="Giày thời trang nam ABC, phong cách trẻ trung và hiện đại." data-category="giay_nam" />
+        <p class="mt-2">Giày Thể Thao Nam ABC</p>
+        <div class="d-flex justify-content-between align-items-center">
+          <p class="price mb-0">
+            <s class="text-muted">400,000 đ</s>
+            <span class="fw-bold text-danger">300,000 đ</span>
+          </p>
+          <span class="badge bg-danger text-white p-2 ms-2">-25%</span>
+        </div>
+      </div>
+
+    </div>
+    <!-- Thanh chuyển trang
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center mt-2">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">Trước</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="giay_nam_page_1.html">1</a></li>
+                <li class="page-item"><a class="page-link" href="giay_nam_page_2.html">2</a></li>
+                <li class="page-item"><a class="page-link" href="giay_nam_page_3.html">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="giay_nam_page_2.html">Tiếp theo</a>
+                </li>
+            </ul>
+        </nav> -->
+  </main>
+
+  <!-- Giỏ hàng -->
+  <div class="cart" id="cart">
+    <div class="cart-header pt-2">
+      <h5>Giỏ Hàng</h5>
+      <button class="btn-close" id="cart-close"></button>
+    </div>
+    <div class="cart-body" id="cart-body">
+      <p class="cart-empty pt-2">Giỏ hàng của bạn trống.</p>
+    </div>
+    <div class="cart-footer">
+      <strong>Tổng: <span id="cart-total">0</span> đ</strong>
+      <button class="btn btn-primary float-end" id="checkout-btn">
+        Thanh toán
+      </button>
+    </div>
+  </div>
+
+  <footer class="bg-dark text-white py-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">
+          <h3 class="fw-bold">Về ABC Shoes</h3>
+          <p>
+            <strong>ABC Shoes</strong> là thương hiệu giày dép hàng đầu, cung cấp các mẫu giày thời trang,
+            chất lượng cao với giá cả hợp lý. Cam kết mang đến trải nghiệm mua sắm tốt nhất cho khách hàng.
+          </p>
+        </div>
+
+        <div class="col-md-3">
+          <h3 class="fw-bold">Liên Hệ</h3>
+          <p><i class="fas fa-map-marker-alt me-2"></i> 12 Nguyễn Văn Bảo, Phường 4, Quận Gò Vấp, TP.HCM</p>
+          <p><i class="fas fa-phone me-2"></i> 0909 123 456</p>
+          <p><i class="fas fa-envelope me-2"></i> support@abcshoes.vn</p>
+        </div>
+
+        <div class="col-md-3">
+          <h3 class="fw-bold">Hỗ Trợ Khách Hàng</h3>
+          <ul class="list-unstyled">
+            <li><a class="text-white" href="#"><i class="fas fa-shield-alt me-2"></i> Chính sách bảo hành</a></li>
+            <li><a class="text-white" href="#"><i class="fas fa-exchange-alt me-2"></i> Chính sách đổi trả</a></li>
+            <li><a class="text-white" href="#"><i class="fas fa-shipping-fast me-2"></i> Chính sách vận chuyển</a></li>
+            <li><a class="text-white" href="#"><i class="fas fa-question-circle me-2"></i> Câu hỏi thường gặp</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-3">
+          <h3 class="fw-bold">Kết Nối Với Chúng Tôi</h3>
+          <div class="d-flex">
+            <a class="text-white me-3 fs-4" href="#"><i class="fab fa-facebook-f"></i></a>
+            <a class="text-white me-3 fs-4" href="#"><i class="fab fa-instagram"></i></a>
+            <a class="text-white me-3 fs-4" href="#"><i class="fab fa-twitter"></i></a>
+            <a class="text-white fs-4" href="#"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-top pt-2 text-center">
+        <p class="mb-0 fst-italic">© 2025 ABC Shoes. All rights reserved. | Thiết kế bởi Nhóm 15 - Bài Tập Lớn
+          Hệ thống Công nghệ Web
+        </p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
