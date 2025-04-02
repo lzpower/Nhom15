@@ -298,42 +298,186 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  let isQuickBuy = false;
+  let quickBuyItems = [];
+
+  // Hàm hiển thị modal thanh toán (sửa đổi)
+  function showCheckoutModal(items) {
+    const itemsContainer = document.getElementById("checkout-items");
+    const total = items.reduce(
+      (sum, item) => sum + item.price * item.quantity,
+      0
+    );
+
+    itemsContainer.innerHTML = items
+      .map(
+        (item) => `
+      <div class="d-flex mb-2">
+        <img src="${item.image}" class="me-2" width="50" height="50">
+        <div>
+          <div>${item.name}</div>
+          <small class="text-muted">
+            ${item.color ? "Màu: " + item.color : ""} 
+            ${item.size ? "Size: " + item.size : ""}
+          </small>
+          <div>${item.quantity} x ${item.price.toLocaleString()} đ</div>
+        </div>
+      </div>`
+      )
+      .join("");
+
+    document.getElementById("checkout-total").textContent =
+      total.toLocaleString();
+    new bootstrap.Modal(document.getElementById("checkoutModal")).show();
+  }
+
   const checkoutBtn = document.getElementById("checkout-btn");
 
   // Kiểm tra nếu sự kiện thanh toán
-  if (!checkoutBtn.hasAttribute("data-clicked")) {
-    checkoutBtn.setAttribute("data-clicked", "true");
-
-    checkoutBtn.addEventListener("click", function () {
+  document
+    .getElementById("checkout-btn")
+    .addEventListener("click", function () {
       if (cartItems.length === 0) {
-        alert(
-          "🛒 Giỏ hàng của bạn đang trống. Hãy thêm sản phẩm trước khi thanh toán!"
+        // Thay thế alert bằng hiển thị modal
+        const emptyCartModal = new bootstrap.Modal(
+          document.getElementById("emptyCartModal")
         );
+        emptyCartModal.show();
+        // Tự động đóng sau 2 giây
+        setTimeout(() => {
+          emptyCartModal.hide();
+        }, 2000);
         return;
       }
 
-      let confirmCheckout = confirm(
-        `Xác nhận thanh toán ${totalAmount.toLocaleString()} đ?`
-      );
-      if (confirmCheckout) {
-        let receipt =
-          "🧾 HÓA ĐƠN THANH TOÁN\n-------------------------------------------------------\n";
-        cartItems.forEach((item) => {
-          receipt += `${item.name} (${item.color}, Size: ${item.size}) - ${
-            item.quantity
-          } x ${item.price.toLocaleString()} đ\n`;
-        });
-        receipt += `-------------------------------------------------------\nTổng cộng: ${totalAmount.toLocaleString()} đ`;
+      // Hiển thị thông tin sản phẩm
+      const itemsContainer = document.getElementById("checkout-items");
+      itemsContainer.innerHTML = cartItems
+        .map(
+          (item) => `
+        <div class="d-flex mb-2">
+            <img src="${item.image}" class="me-2" width="50" height="50">
+            <div>
+                <div>${item.name}</div>
+                <small class="text-muted">${
+                  item.color ? "Màu: " + item.color : ""
+                } ${item.size ? "Size: " + item.size : ""}</small>
+                <div>${item.quantity} x ${item.price.toLocaleString()} đ</div>
+            </div>
+        </div>
+    `
+        )
+        .join("");
 
-        alert(receipt);
+      // Cập nhật tổng tiền
+      document.getElementById("checkout-total").textContent =
+        totalAmount.toLocaleString();
 
-        // Reset giỏ hàng sau khi thanh toán
+      // Hiển thị modal
+      new bootstrap.Modal(document.getElementById("checkoutModal")).show();
+    });
+
+  // Xử lý thanh toán
+  document
+    .getElementById("paymentForm")
+    .addEventListener("submit", function (e) {
+      e.preventDefault();
+      let isValid = true;
+
+      // Lấy các trường input
+      const fullnameInput = document.getElementById("checkoutFullname");
+      const addressInput = document.getElementById("checkoutAddress");
+      const phoneInput = document.getElementById("checkoutPhone");
+      const paymentInput = document.getElementById("checkoutPayment");
+
+      // Regex validation
+      const nameRegex = /^[a-zA-ZÀ-ỹ\s]{3,}$/;
+      const addressRegex = /^[a-zA-Z0-9À-ỹ\s\/.,-]{5,}$/;
+      const phoneRegex = /^0\d{9}$/;
+
+      // Clear errors
+      clearError(fullnameInput);
+      clearError(addressInput);
+      clearError(phoneInput);
+      clearError(paymentInput);
+
+      // Validate từng trường
+      if (
+        !validateInput(
+          fullnameInput,
+          nameRegex,
+          "Vui lòng nhập họ tên hợp lệ (tối thiểu 3 ký tự)"
+        )
+      ) {
+        isValid = false;
+      }
+
+      if (
+        !validateInput(
+          addressInput,
+          addressRegex,
+          "Địa chỉ không hợp lệ (tối thiểu 5 ký tự)"
+        )
+      ) {
+        isValid = false;
+      }
+
+      if (
+        !validateInput(
+          phoneInput,
+          phoneRegex,
+          "Số điện thoại phải có 10 số và bắt đầu bằng 0"
+        )
+      ) {
+        isValid = false;
+      }
+
+      if (paymentInput.value === "") {
+        showError(paymentInput, "Vui lòng chọn phương thức thanh toán");
+        isValid = false;
+      }
+
+      if (!isValid) return;
+
+      // Xử lý dữ liệu theo loại thanh toán
+      if (isQuickBuy) {
+        console.log("Xử lý mua ngay:", quickBuyItems);
+        // Gửi dữ liệu mua ngay đến API hoặc xử lý tại đây
+        quickBuyItems = [];
+      } else {
+        console.log("Xử lý giỏ hàng:", cartItems);
+        // Gửi dữ liệu giỏ hàng đến API hoặc xử lý tại đây
         cartItems = [];
         totalAmount = 0;
         updateCart();
       }
+
+      // Hiển thị thông báo và reset
+      const successModal = new bootstrap.Modal(
+        document.getElementById("successModal")
+      );
+      successModal.show();
+      this.reset();
+      isQuickBuy = false;
+
+      // Đóng modal
+      bootstrap.Modal.getInstance(
+        document.getElementById("checkoutModal")
+      ).hide();
+      setTimeout(() => successModal.hide(), 3000);
     });
-  }
+
+  // Thêm sự kiện input cho các trường
+  document
+    .querySelectorAll("#paymentForm input, #paymentForm select")
+    .forEach((input) => {
+      input.addEventListener("input", () => {
+        clearError(input);
+        if (input.id === "checkoutPhone") {
+          input.value = input.value.replace(/\D/g, ""); // Chỉ cho phép nhập số
+        }
+      });
+    });
 
   // Xử lý khi click vào ảnh sản phẩm để mở modal
   document.querySelectorAll(".product-image").forEach((img) => {
@@ -455,7 +599,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Nếu có tùy chọn nhưng chưa chọn thì cảnh báo
       if ((hasColorOption && !color) || (hasSizeOption && !size)) {
-        alert("Vui lòng chọn màu và size trước khi tiếp tục.");
+        // Hiển thị modal cảnh báo
+        const errorModal = new bootstrap.Modal(
+          document.getElementById("errorModal")
+        );
+        errorModal.show();
+
+        // Tự động ẩn sau 2.5 giây
+        setTimeout(() => {
+          errorModal.hide();
+        }, 2500);
         return;
       }
 
@@ -473,11 +626,25 @@ document.addEventListener("DOMContentLoaded", function () {
       productDetails += `\nGiá: ${price.toLocaleString()} đ`;
 
       if (target.classList.contains("buy-now")) {
-        alert(productDetails);
+        // Xử lý mua ngay
+        quickBuyItems = [
+          {
+            name: productName,
+            price,
+            color: color || null,
+            size: size || null,
+            quantity,
+            image,
+          },
+        ];
+
+        isQuickBuy = true;
+        showCheckoutModal(quickBuyItems);
         bootstrap.Modal.getInstance(
           document.getElementById("productModal")
         ).hide();
       } else {
+        // Thêm vào giỏ hàng
         cartItems.push({
           name: productName,
           price,
@@ -489,15 +656,23 @@ document.addEventListener("DOMContentLoaded", function () {
         totalAmount += price * quantity;
         updateCart();
 
-        let cartMessage = `✅ Thêm vào giỏ hàng thành công!\n\nSản phẩm: "${productName}"`;
-        if (attributes.length > 0) {
-          cartMessage += `\n${attributes.join(" - ")}`;
-        }
-        cartMessage += `\nSố lượng: ${quantity}\nTổng giá: ${(
-          price * quantity
-        ).toLocaleString()} đ`;
+        // Ẩn modal sản phẩm
+        const productModal = bootstrap.Modal.getInstance(
+          document.getElementById("productModal")
+        );
+        if (productModal) productModal.hide();
 
-        alert(cartMessage);
+        // Hiển thị modal thanh toán
+        const cartNotification = new bootstrap.Modal(
+          document.getElementById("cartNotification")
+        );
+        cartNotification.show();
+
+        // Tự động ẩn sau 2 giây
+        setTimeout(() => {
+          cartNotification.hide();
+        }, 2000);
+
         cart.style.display = "block";
       }
     }

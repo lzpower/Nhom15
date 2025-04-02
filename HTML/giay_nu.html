@@ -4,24 +4,10 @@
 <head>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="favicon/apple-touch-icon.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="favicon/favicon-32x32.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="favicon/favicon-16x16.png"
-    />
-    <link rel="manifest" href="favicon/site.webmanifest" />
+  <link rel="apple-touch-icon" sizes="180x180" href="FAVICON/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="FAVICON/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="FAVICON/favicon-16x16.png">
+  <link rel="manifest" href="FAVICON/site.webmanifest">
   <title>ABC Shoes - Giày Nữ</title>
   <link href="../CSS/bootstrap.min.css" rel="stylesheet" />
   <link href="../CSS/all.min.css" rel="stylesheet" />
@@ -39,7 +25,7 @@
           ☰
         </button>
         <a class="navbar-brand" href="../index.html">
-          <img src="../favicon/apple-touch-icon.png" alt="Logo" class="logo" height="50" />
+          <img src="../IMAGE/logo.png" alt="Logo" class="logo" height="50" />
         </a>
       </div>
 
@@ -307,6 +293,118 @@
       </div>
     </div>
   </footer>
+
+  <!-- Modal cảnh báo -->
+    <div class="modal fade" id="errorModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center py-4">
+                    <i class="fas fa-exclamation-triangle text-danger fs-1 mb-3"></i>
+                    <h4 class="text-danger">Vui lòng chọn đầy đủ màu và size trước khi tiếp tục!</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal thông báo -->
+    <div class="modal fade" id="cartNotification" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center py-4">
+                    <i class="fas fa-check-circle text-success fs-1 mb-3"></i>
+                    <h4>Thêm vào giỏ hàng thành công!</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal thông báo giỏ hàng trống -->
+    <div class="modal fade" id="emptyCartModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">Thông báo</h3>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+            Chưa có sản phẩm trong giỏ hàng!
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+        </div>
+        </div>
+    </div>
+    </div>
+
+    
+    <!-- Thêm sau modal cảnh báo -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center py-4">
+                    <i class="fas fa-check-circle text-success fs-1 mb-3"></i>
+                    <h4 class="text-success mb-3">Thanh toán thành công!</h4>
+                    <p>Cảm ơn bạn đã mua hàng tại ABC Shoes</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trong phần modal thanh toán -->
+    <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Xác nhận đơn hàng</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+              <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Thông tin sản phẩm:</h6>
+                            <div id="checkout-items"></div>
+                            <hr>
+                            <h6>Tổng cộng: <span id="checkout-total">0</span> đ</h6>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h6>Thông tin thanh toán:</h6>
+                            <form id="paymentForm">
+                                <div class="mb-3">
+                                    <label class="form-label">Họ tên</label>
+                                    <input type="text" class="form-control" id="checkoutFullname" required>
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Địa chỉ</label>
+                                    <input type="text" class="form-control" id="checkoutAddress" required>
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Số điện thoại</label>
+                                    <input type="tel" class="form-control" id="checkoutPhone" required>
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Phương thức thanh toán</label>
+                                    <select class="form-select" id="checkoutPayment" required>
+                                        <option value="">Chọn phương thức</option>
+                                        <option>COD</option>
+                                        <option>Chuyển khoản</option>
+                                        <option>Ví điện tử</option>
+                                    </select>
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary" form="paymentForm">Xác nhận thanh toán</button>
+                </div>
+            </div>
+        </div>
 </body>
 
 </html>

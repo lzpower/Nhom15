@@ -43,6 +43,8 @@
 /* Định dạng hình ảnh trang chủ */
 #carouselId {
     margin-top: 89px;
+    justify-content: center;
+    text-align: center;
 }
 
 #title_carouselId {
@@ -80,7 +82,7 @@
 
 .product-item:hover {
     transform: scale(1.05);
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.2);
 }
 
 /* Định dạng hiệu ứng rơi xuống */
@@ -163,4 +165,89 @@ ul li.active {
 
 .list-unstyled a:hover {
     text-decoration: underline;
+}
+
+.product-item{
+    margin: 0px;
+}
+
+/* Thêm style mới cho modal thông báo */
+#cartNotification .modal-content {
+    border: none;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+#cartNotification .modal-body {
+    border-radius: 10px;
+    padding: 2rem;
+}
+
+#errorModal .modal-content {
+    border: 2px solid #dc3545;
+    border-radius: 10px;
+}
+
+#errorModal .modal-body {
+    padding: 2rem;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+}
+
+
+/*Thêm style cho model thanh toán*/
+#checkout-items img {
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+#checkoutModal .modal-body {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+#successModal .modal-content {
+    border: 2px solid #28a745;
+}
+
+.invalid-feedback {
+    display: none;
+    color: #dc3545;
+    font-size: 0.875em;
+    margin-top: 0.25rem;
+}
+
+.is-invalid {
+    border-color: #dc3545 !important;
+}
+
+.is-invalid ~ .invalid-feedback {
+    display: block;
+}
+
+/* Thêm vào file css.css */
+.modal-backdrop {
+    z-index: 1040 !important;
+}
+
+.modal {
+    z-index: 1050 !important;
+}
+
+#successModal .modal-content {
+    border: 2px solid #28a745;
+    border-radius: 15px;
+}
+
+#successModal .fa-check-circle {
+    animation: bounce 1s;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+    40% {transform: translateY(-30px);}
+    60% {transform: translateY(-15px);}
 }
