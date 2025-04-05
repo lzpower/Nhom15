@@ -110,7 +110,9 @@
             </nav>
 
             <div class="d-flex align-items-center">
-                <input class="form-control me-2" placeholder="Tìm kiếm" type="text" />
+                <!-- <input class="form-control me-2 w-100 w-sm-100" placeholder="Tìm kiếm" type="text" /> -->
+                <input class="form-control me-2 d-none d-sm-block" placeholder="Tìm kiếm" type="text" />
+                <input class="form-control me-2 w-100 d-block d-sm-none" placeholder="Tìm kiếm" type="text" />
                 <a href="#" class="text-dark"><i class="fas fa-search"></i></a>
                 <a href="HTML/dang_nhap.html" class="text-dark ms-2"><i class="fas fa-user"></i></a>
                 <a href="HTML/danh_sach_dang_ky.html" class="text-dark ms-2"><i class="fas fa-users"></i></a>
@@ -122,19 +124,7 @@
 
     <!-- Hinh anh trang chu -->
     <div id="carouselId" class="carousel slide" data-bs-ride="carousel">
-        <!-- <h2 id="title_carouselId" class="text-center fw-bold mt-4">ABC - AN TOÀN, BỨC PHÁ, CÁ TÍNH</h2> -->
-        <h2
-        id="title_carouselId"
-        class="text-center fw-bold mt-4 fs-3 d-none d-sm-block"
-      >
-        N15 - AN TOÀN, BỨC PHÁ, CÁ TÍNH
-      </h2>
-      <h2
-        id="title_carouselId"
-        class="text-center fw-bold mt-4 fs-6 d-block d-sm-none"
-      >
-        N15 - AN TOÀN, BỨC PHÁ, CÁ TÍNH
-      </h2>
+        <h2 id="title_carouselId" class="text-center fw-bold mt-4" style="font-size: clamp(1rem, 2.5vw, 2rem)" >ABC - AN TOÀN, BỨC PHÁ, CÁ TÍNH</h2>
         <div class="carousel-inner">
             <div class="carousel-item active">
                 <img src="IMAGE/trangchu1.png" alt="banner1" class="img-fluid">
