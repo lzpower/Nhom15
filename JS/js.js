@@ -1,30 +1,26 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const loginForm = document.getElementById("login-form");
-  const registerForm = document.getElementById("register-form");
-
-  // Hiển thị lỗi ngay dưới input
+  // 1. CÁC HÀM HỖ TRỢ VALIDATION
   function showError(input, message) {
     let small = input.nextElementSibling;
     if (!small || small.tagName !== "SMALL") {
       small = document.createElement("small");
-      input.parentNode.appendChild(small);
+      input.parentNode.appendChild(small); // Thêm thẻ <small> vào sau input nếu chưa có
     }
     small.textContent = message;
-    small.classList.add("text-danger");
-    input.classList.add("is-invalid");
+    small.classList.add("text-danger"); // Thêm class Bootstrap để hiển thị lỗi màu đỏ
+    input.classList.add("is-invalid"); // Thêm class Bootstrap để đánh dấu input không hợp lệ
   }
 
-  // Xóa lỗi khi nhập đúng
   function clearError(input) {
     let small = input.nextElementSibling;
     if (small && small.tagName === "SMALL") {
-      small.textContent = "";
+      small.textContent = ""; // Xóa thông báo lỗi
     }
-    input.classList.remove("is-invalid");
+    input.classList.remove("is-invalid"); // Xóa trạng thái không hợp lệ khỏi input
   }
 
-  // Kiểm tra đầu vào theo regex
   function validateInput(input, regex, errorMessage) {
+    // Hàm kiểm tra giá trị input dựa trên biểu thức chính quy (regex)
     if (!regex.test(input.value.trim())) {
       showError(input, errorMessage);
       return false;
@@ -34,8 +30,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Kiểm tra ngày sinh hợp lệ
   function validateBirthdate(input) {
+    // Kiểm tra ngày sinh có được chọn hay không
     if (!input.value) {
       showError(input, "Vui lòng chọn ngày sinh.");
       return false;
@@ -45,8 +41,8 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Kiểm tra mật khẩu nhập lại
   function validateConfirmPassword(password, confirmPassword) {
+    // So sánh mật khẩu và mật khẩu xác nhận
     if (password.value !== confirmPassword.value) {
       showError(confirmPassword, "Mật khẩu nhập lại không khớp.");
       return false;
@@ -56,48 +52,63 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Xử lý form đăng nhập
+  function formatDate(dateString) {
+    // Định dạng lại ngày từ YYYY-MM-DD thành DD-MM-YYYY
+    if (!dateString) return "";
+    let parts = dateString.split("-");
+    return `${parts[2]}-${parts[1]}-${parts[0]}`;
+  }
+
+  // 2. XỬ LÝ FORM ĐĂNG NHẬP
+  const loginForm = document.getElementById("login-form");
   if (loginForm) {
+    const username = document.getElementById("login-username");
+    const password = document.getElementById("login-password");
+
+    // Kiểm tra ngay khi người dùng nhập dữ liệu (real-time validation)
+    username.addEventListener("input", () => {
+      validateInput(
+        username,
+        /^[a-zA-Z][a-zA-Z0-9_.]{4,19}$/, // Bắt đầu bằng chữ cái, dài 5-20 ký tự, cho phép chữ, số, _, .
+        "Tên đăng nhập phải bắt đầu bằng chữ cái, dài 5-20 ký tự."
+      );
+    });
+
+    password.addEventListener("input", () => {
+      validateInput(
+        password,
+        /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, // Mật khẩu: ít nhất 8 ký tự, có chữ hoa, thường, số và ký tự đặc biệt
+        "Mật khẩu tối thiểu 8 ký tự, gồm chữ hoa, chữ thường, số và ký tự đặc biệt."
+      );
+    });
+
     loginForm.addEventListener("submit", function (event) {
-      event.preventDefault();
-      const username = document.getElementById("login-username");
-      const password = document.getElementById("login-password");
+      event.preventDefault(); // Ngăn form gửi dữ liệu mặc định
       let isValid = true;
 
-      if (
-        !validateInput(
-          username,
-          /^[a-zA-Z][a-zA-Z0-9_.]{4,19}$/,
-          "Tên đăng nhập phải bắt đầu bằng chữ cái, dài 5-20 ký tự."
-        )
-      ) {
-        isValid = false;
-      }
-      if (
-        !validateInput(
-          password,
-          /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-          "Mật khẩu tối thiểu 8 ký tự, gồm chữ hoa, chữ thường, số và ký tự đặc biệt."
-        )
-      ) {
-        isValid = false;
-      }
+      // Kiểm tra tất cả trường khi submit
+      isValid &= validateInput(
+        username,
+        /^[a-zA-Z][a-zA-Z0-9_.]{4,19}$/,
+        "Tên đăng nhập phải bắt đầu bằng chữ cái, dài 5-20 ký tự."
+      );
+      isValid &= validateInput(
+        password,
+        /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+        "Mật khẩu tối thiểu 8 ký tự, gồm chữ hoa, chữ thường, số và ký tự đặc biệt."
+      );
 
-      if (!isValid) return;
+      if (!isValid) return; // Dừng nếu có lỗi
 
-      // Lấy danh sách người dùng đã đăng ký từ localStorage
-      let users = JSON.parse(localStorage.getItem("users")) || [];
-
-      // Kiểm tra thông tin đăng nhập
+      let users = JSON.parse(localStorage.getItem("users")) || []; // Lấy danh sách người dùng từ localStorage
       const user = users.find(
-        (u) =>
-          u.username === username.value.trim() && u.password === password.value
+        (u) => u.username === username.value.trim() && u.password === password.value
       );
 
       if (user) {
         alert("Đăng nhập thành công! Chuyển hướng đến trang chủ...");
         setTimeout(() => {
-          window.location.href = "../index.html"; // Chuyển hướng đến trang chính
+          window.location.href = "../index.html"; // Chuyển hướng sau 2 giây
         }, 2000);
       } else {
         showError(username, "Tên đăng nhập hoặc mật khẩu không đúng.");
@@ -106,471 +117,419 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Xử lý form đăng ký
+  // 3. XỬ LÝ FORM ĐĂNG KÝ
+  const registerForm = document.getElementById("register-form");
   if (registerForm) {
+    const inputs = {
+      fullname: document.getElementById("register-fullname"),
+      birthdate: document.getElementById("register-birthdate"),
+      email: document.getElementById("register-email"),
+      phone: document.getElementById("register-phone"),
+      username: document.getElementById("register-username"),
+      password: document.getElementById("register-password"),
+      confirmPassword: document.getElementById("register-confirm-password")
+    };
+
+    // Real-time validation cho từng trường
+    inputs.fullname.addEventListener("input", () => {
+      validateInput(
+        inputs.fullname,
+        /^[a-zA-ZÀ-ỹ\s]{3,}$/, // Chỉ chứa chữ cái (bao gồm tiếng Việt), tối thiểu 3 ký tự
+        "Họ và tên chỉ chứa chữ cái, tối thiểu 3 ký tự."
+      );
+    });
+
+    inputs.birthdate.addEventListener("input", () => {
+      validateBirthdate(inputs.birthdate);
+    });
+
+    inputs.email.addEventListener("input", () => {
+      validateInput(
+        inputs.email,
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, // Định dạng email chuẩn
+        "Email không hợp lệ!"
+      );
+    });
+
+    inputs.phone.addEventListener("input", () => {
+      validateInput(
+        inputs.phone,
+        /^0\d{9}$/, // Số điện thoại 10 chữ số, bắt đầu bằng 0
+        "Số điện thoại phải có 10 chữ số và bắt đầu bằng 0."
+      );
+    });
+
+    inputs.username.addEventListener("input", () => {
+      validateInput(
+        inputs.username,
+        /^[a-zA-Z][a-zA-Z0-9_.]{4,19}$/,
+        "Tên đăng nhập phải bắt đầu bằng chữ cái, dài 5-20 ký tự."
+      );
+    });
+
+    inputs.password.addEventListener("input", () => {
+      validateInput(
+        inputs.password,
+        /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+        "Mật khẩu tối thiểu 8 ký tự, gồm chữ hoa, chữ thường, số và ký tự đặc biệt."
+      );
+      // Khi thay đổi password, kiểm tra lại confirm password nếu đã nhập
+      if (inputs.confirmPassword.value) {
+        validateConfirmPassword(inputs.password, inputs.confirmPassword);
+      }
+    });
+
+    inputs.confirmPassword.addEventListener("input", () => {
+      validateConfirmPassword(inputs.password, inputs.confirmPassword);
+    });
+
     registerForm.addEventListener("submit", function (event) {
       event.preventDefault();
-      const fullname = document.getElementById("register-fullname");
-      const birthdate = document.getElementById("register-birthdate");
-      const email = document.getElementById("register-email");
-      const phone = document.getElementById("register-phone");
-      const username = document.getElementById("register-username");
-      const password = document.getElementById("register-password");
-      const confirmPassword = document.getElementById(
-        "register-confirm-password"
-      );
-
       let isValid = true;
 
-      if (
-        !validateInput(
-          fullname,
-          /^[a-zA-ZÀ-ỹ\s]{3,}$/,
-          "Họ và tên chỉ chứa chữ cái, tối thiểu 3 ký tự."
-        )
-      )
-        isValid = false;
-      if (!validateBirthdate(birthdate)) isValid = false;
-      if (
-        !validateInput(
-          email,
-          /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-          "Email không hợp lệ!"
-        )
-      )
-        isValid = false;
-      if (
-        !validateInput(
-          phone,
-          /^0\d{9}$/,
-          "Số điện thoại phải có 10 chữ số và bắt đầu bằng 0."
-        )
-      )
-        isValid = false;
-      if (
-        !validateInput(
-          username,
-          /^[a-zA-Z][a-zA-Z0-9_.]{4,19}$/,
-          "Tên đăng nhập phải bắt đầu bằng chữ cái, dài 5-20 ký tự."
-        )
-      )
-        isValid = false;
-      if (
-        !validateInput(
-          password,
-          /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-          "Mật khẩu tối thiểu 8 ký tự, gồm chữ hoa, chữ thường, số và ký tự đặc biệt."
-        )
-      )
-        isValid = false;
-      if (!validateConfirmPassword(password, confirmPassword)) isValid = false;
+      // Kiểm tra tất cả trường khi submit
+      isValid &= validateInput(
+        inputs.fullname,
+        /^[a-zA-ZÀ-ỹ\s]{3,}$/,
+        "Họ và tên chỉ chứa chữ cái, tối thiểu 3 ký tự."
+      );
+      isValid &= validateBirthdate(inputs.birthdate);
+      isValid &= validateInput(
+        inputs.email,
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+        "Email không hợp lệ!"
+      );
+      isValid &= validateInput(
+        inputs.phone,
+        /^0\d{9}$/,
+        "Số điện thoại phải có 10 chữ số và bắt đầu bằng 0."
+      );
+      isValid &= validateInput(
+        inputs.username,
+        /^[a-zA-Z][a-zA-Z0-9_.]{4,19}$/,
+        "Tên đăng nhập phải bắt đầu bằng chữ cái, dài 5-20 ký tự."
+      );
+      isValid &= validateInput(
+        inputs.password,
+        /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+        "Mật khẩu tối thiểu 8 ký tự, gồm chữ hoa, chữ thường, số và ký tự đặc biệt."
+      );
+      isValid &= validateConfirmPassword(inputs.password, inputs.confirmPassword);
 
       if (!isValid) return;
 
-      // Tạo đối tượng người dùng
       const user = {
-        fullname: fullname.value.trim(),
-        birthdate: birthdate.value,
-        email: email.value.trim(),
-        phone: phone.value.trim(),
-        username: username.value.trim(),
-        password: password.value,
+        fullname: inputs.fullname.value.trim(),
+        birthdate: inputs.birthdate.value,
+        email: inputs.email.value.trim(),
+        phone: inputs.phone.value.trim(),
+        username: inputs.username.value.trim(),
+        password: inputs.password.value
       };
 
-      // Lấy danh sách người dùng đã lưu (nếu có)
       let users = JSON.parse(localStorage.getItem("users")) || [];
-
-      // Kiểm tra xem username đã tồn tại chưa
       if (users.some((u) => u.username === user.username)) {
-        showError(
-          username,
-          "Tên đăng nhập đã tồn tại, vui lòng chọn tên khác."
-        );
+        showError(inputs.username, "Tên đăng nhập đã tồn tại, vui lòng chọn tên khác.");
         return;
       }
 
-      // Thêm người dùng mới vào danh sách
       users.push(user);
-
-      // Lưu danh sách vào localStorage
-      localStorage.setItem("users", JSON.stringify(users));
-
-      // Hiển thị thông báo và chuyển hướng
+      localStorage.setItem("users", JSON.stringify(users)); // Lưu danh sách người dùng vào localStorage
       alert("Đăng ký thành công! Đang chuyển hướng đến trang đăng nhập...");
       setTimeout(() => {
-        window.location.href = "dang_nhap.html"; // Chuyển hướng đến trang đăng nhập
+        window.location.href = "dang_nhap.html";
       }, 2000);
     });
-
-    // Kiểm tra lỗi ngay khi nhập dữ liệu
-    document.querySelectorAll("#register-form input").forEach((input) => {
-      input.addEventListener("input", () => clearError(input));
-    });
   }
 
-  // Lắng nghe sự kiện click nút Xóa
-  document.addEventListener("click", function (event) {
-    if (event.target.classList.contains("delete-user")) {
-      const index = event.target.getAttribute("data-index");
+  // 4. XỬ LÝ DANH SÁCH NGƯỜI DÙNG
+  function renderUserList() {
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const userListElement = document.getElementById("user-list");
 
-      if (confirm("Bạn có chắc chắn muốn xóa người dùng này không?")) {
-        users.splice(index, 1); // Xóa người dùng khỏi mảng
-        localStorage.setItem("users", JSON.stringify(users)); // Cập nhật vào localStorage
-        renderUserList(); // Cập nhật danh sách trên giao diện
-        alert("Xóa người dùng thành công!");
-      }
+    if (!userListElement) {
+      console.warn("Phần tử với ID 'user-list' không tồn tại trong DOM.");
+      return;
     }
-  });
 
-  // Khởi tạo carousel tự động chạy sau 3 giây, dừng khi hover, và cho phép lặp lại
-  let carouselElement = document.querySelector("#carouselId");
-  if (carouselElement) {
-    var myCarousel = new bootstrap.Carousel(carouselElement, {
-      interval: 3000,
-      pause: "hover",
-      wrap: true,
+    userListElement.innerHTML = "";
+
+    if (users.length === 0) {
+      userListElement.innerHTML = `
+              <tr>
+                  <td colspan="7" class="text-center">
+                      Chưa có người dùng nào đăng ký. <br>
+                      <a href="dang_ky.html" class="btn btn-primary mt-2">Đăng ký ngay</a>
+                  </td>
+              </tr>`;
+      return;
+    }
+
+    users.forEach((user, index) => {
+      userListElement.innerHTML += `
+              <tr>
+                  <td>${index + 1}</td>
+                  <td>${user.fullname}</td>
+                  <td>${formatDate(user.birthdate)}</td>
+                  <td>${user.email}</td>
+                  <td>${user.phone}</td>
+                  <td>${user.username}</td>
+                  <td><button class="btn btn-danger btn-sm delete-user" data-index="${index}">Xóa</button></td>
+              </tr>`;
     });
   }
 
-  // Lấy các phần tử liên quan đến giỏ hàng
-  const cartToggle = document.getElementById("cart-toggle");
-  const cart = document.getElementById("cart");
-  const cartClose = document.getElementById("cart-close");
-  const cartBody = document.getElementById("cart-body");
-  const cartTotal = document.getElementById("cart-total");
+  if (document.getElementById("user-list")) {
+    renderUserList(); // Hiển thị danh sách người dùng khi trang có phần tử "user-list"
+  }
 
-  let cartItems = []; // Mảng chứa các sản phẩm trong giỏ hàng
-  let totalAmount = 0; // Tổng số tiền trong giỏ hàng
+  // 5. XỬ LÝ GIỎ HÀNG
+  const cartElements = {
+    toggle: document.getElementById("cart-toggle"),
+    cart: document.getElementById("cart"),
+    close: document.getElementById("cart-close"),
+    body: document.getElementById("cart-body"),
+    total: document.getElementById("cart-total")
+  };
+  let cartItems = []; // Mảng lưu các sản phẩm trong giỏ hàng
+  let totalAmount = 0; // Tổng tiền giỏ hàng
 
-  // Hiển thị hoặc ẩn giỏ hàng khi nhấn nút toggle
-  cartToggle.addEventListener("click", () => {
-    cart.classList.add("show-cart");
-  });
+  if (cartElements.toggle) {
+    cartElements.toggle.addEventListener("click", () => {
+      cartElements.cart.classList.add("show-cart"); // Hiển thị giỏ hàng
+    });
+  }
 
-  // Ẩn giỏ hàng khi nhấn nút close
-  cartClose.addEventListener("click", () => {
-    cart.classList.remove("show-cart");
-    cart.style.display = "none";
-  });
+  if (cartElements.close) {
+    cartElements.close.addEventListener("click", () => {
+      cartElements.cart.classList.remove("show-cart");
+      cartElements.cart.style.display = "none"; // Ẩn giỏ hàng
+    });
+  }
 
-  // Cập nhật hiển thị giỏ hàng
   function updateCart() {
-    cartBody.innerHTML = cartItems.length
+    if (!cartElements.body) return;
+    cartElements.body.innerHTML = cartItems.length
       ? cartItems
-          .map(
-            (item, index) => `
-          <div class="cart-item d-flex align-items-center justify-content-between border-bottom pb-2 mb-2">
-            <div class="d-flex align-items-center">
-              <img src="${item.image}" alt="${item.name}" 
-                   class="cart-item-img" 
-                   style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;">
-              <div class="ms-3">
-                <p class="mb-1"><strong>${item.name}</strong></p>
-                <p class="text-muted mb-0">
-                  Màu: ${item.color}, Size: ${item.size}, Số lượng: ${
-              item.quantity
-            }
-                </p>
-                <p class="mb-0"><strong>${(
-                  item.price * item.quantity
-                ).toLocaleString()} đ</strong></p>
-              </div>
-            </div>
-            <button class="btn btn-sm btn-danger remove-item" data-index="${index}">Xóa</button>
-          </div>`
-          )
-          .join("")
+        .map(
+          (item, index) => `
+                      <div class="cart-item d-flex align-items-center justify-content-between border-bottom pb-2 mb-2">
+                          <div class="d-flex align-items-center">
+                              <img src="${item.image}" alt="${item.name}" 
+                                   class="cart-item-img" 
+                                   style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;">
+                              <div class="ms-3">
+                                  <p class="mb-1"><strong>${item.name}</strong></p>
+                                  <p class="text-muted mb-0">
+                                      Màu: ${item.color}, Size: ${item.size}, Số lượng: ${item.quantity}
+                                  </p>
+                                  <p class="mb-0"><strong>${(item.price * item.quantity).toLocaleString()} đ</strong></p>
+                              </div>
+                          </div>
+                          <button class="btn btn-sm btn-danger remove-item" data-index="${index}">Xóa</button>
+                      </div>`
+        )
+        .join("")
       : '<p class="pt-2">Giỏ hàng của bạn trống.</p>';
 
-    cartTotal.innerText = totalAmount.toLocaleString();
-    attachRemoveEvents();
+    if (cartElements.total) {
+      cartElements.total.innerText = totalAmount.toLocaleString(); // Cập nhật tổng tiền
+    }
+    attachRemoveEvents(); // Gắn sự kiện xóa cho các nút "Xóa" trong giỏ hàng
   }
 
-  // Xóa sản phẩm khỏi giỏ hàng
   function attachRemoveEvents() {
     document.querySelectorAll(".remove-item").forEach((button) => {
       button.addEventListener("click", function () {
         let index = this.getAttribute("data-index");
-        totalAmount -= cartItems[index].price * cartItems[index].quantity;
-        cartItems.splice(index, 1);
-        updateCart();
+        totalAmount -= cartItems[index].price * cartItems[index].quantity; // Cập nhật tổng tiền
+        cartItems.splice(index, 1); // Xóa sản phẩm khỏi giỏ hàng
+        updateCart(); // Cập nhật lại giao diện giỏ hàng
       });
     });
   }
 
-  let isQuickBuy = false;
-  let quickBuyItems = [];
+  // 6. XỬ LÝ THANH TOÁN
+  let isQuickBuy = false; // Biến để phân biệt giữa "Mua ngay" và thanh toán từ giỏ hàng
+  let quickBuyItems = []; // Mảng lưu sản phẩm khi "Mua ngay"
 
-  // Hàm hiển thị modal thanh toán (sửa đổi)
   function showCheckoutModal(items) {
     const itemsContainer = document.getElementById("checkout-items");
-    const total = items.reduce(
-      (sum, item) => sum + item.price * item.quantity,
-      0
-    );
-
+    if (!itemsContainer) return;
+    const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0); // Tính tổng tiền
     itemsContainer.innerHTML = items
       .map(
         (item) => `
-      <div class="d-flex mb-2">
-        <img src="${item.image}" class="me-2" width="50" height="50">
-        <div>
-          <div>${item.name}</div>
-          <small class="text-muted">
-            ${item.color ? "Màu: " + item.color : ""} 
-            ${item.size ? "Size: " + item.size : ""}
-          </small>
-          <div>${item.quantity} x ${item.price.toLocaleString()} đ</div>
-        </div>
-      </div>`
+                  <div class="d-flex mb-2">
+                      <img src="${item.image}" class="me-2" width="50" height="50">
+                      <div>
+                          <div>${item.name}</div>
+                          <small class="text-muted">
+                              ${item.color ? "Màu: " + item.color : ""} 
+                              ${item.size ? "Size: " + item.size : ""}
+                          </small>
+                          <div>${item.quantity} x ${item.price.toLocaleString()} đ</div>
+                      </div>
+                  </div>`
       )
       .join("");
-
-    document.getElementById("checkout-total").textContent =
-      total.toLocaleString();
-    new bootstrap.Modal(document.getElementById("checkoutModal")).show();
+    document.getElementById("checkout-total").textContent = total.toLocaleString();
+    new bootstrap.Modal(document.getElementById("checkoutModal")).show(); // Hiển thị modal thanh toán
   }
 
   const checkoutBtn = document.getElementById("checkout-btn");
-
-  // Kiểm tra nếu sự kiện thanh toán
-  document
-    .getElementById("checkout-btn")
-    .addEventListener("click", function () {
+  if (checkoutBtn) {
+    checkoutBtn.addEventListener("click", function () {
       if (cartItems.length === 0) {
-        // Thay thế alert bằng hiển thị modal
-        const emptyCartModal = new bootstrap.Modal(
-          document.getElementById("emptyCartModal")
-        );
+        const emptyCartModal = new bootstrap.Modal(document.getElementById("emptyCartModal"));
         emptyCartModal.show();
-        // Tự động đóng sau 2 giây
-        setTimeout(() => {
-          emptyCartModal.hide();
-        }, 2000);
+        setTimeout(() => emptyCartModal.hide(), 2000); // Hiển thị thông báo giỏ hàng trống trong 2 giây
         return;
       }
-
-      // Hiển thị thông tin sản phẩm
-      const itemsContainer = document.getElementById("checkout-items");
-      itemsContainer.innerHTML = cartItems
-        .map(
-          (item) => `
-        <div class="d-flex mb-2">
-            <img src="${item.image}" class="me-2" width="50" height="50">
-            <div>
-                <div>${item.name}</div>
-                <small class="text-muted">${
-                  item.color ? "Màu: " + item.color : ""
-                } ${item.size ? "Size: " + item.size : ""}</small>
-                <div>${item.quantity} x ${item.price.toLocaleString()} đ</div>
-            </div>
-        </div>
-    `
-        )
-        .join("");
-
-      // Cập nhật tổng tiền
-      document.getElementById("checkout-total").textContent =
-        totalAmount.toLocaleString();
-
-      // Hiển thị modal
-      new bootstrap.Modal(document.getElementById("checkoutModal")).show();
+      showCheckoutModal(cartItems);
     });
+  }
 
-  // Xử lý thanh toán
-  document
-    .getElementById("paymentForm")
-    .addEventListener("submit", function (e) {
+  const paymentForm = document.getElementById("paymentForm");
+  if (paymentForm) {
+    paymentForm.addEventListener("submit", function (e) {
       e.preventDefault();
+      const inputs = {
+        fullname: document.getElementById("checkoutFullname"),
+        address: document.getElementById("checkoutAddress"),
+        phone: document.getElementById("checkoutPhone"),
+        payment: document.getElementById("checkoutPayment")
+      };
       let isValid = true;
 
-      // Lấy các trường input
-      const fullnameInput = document.getElementById("checkoutFullname");
-      const addressInput = document.getElementById("checkoutAddress");
-      const phoneInput = document.getElementById("checkoutPhone");
-      const paymentInput = document.getElementById("checkoutPayment");
-
-      // Regex validation
-      const nameRegex = /^[a-zA-ZÀ-ỹ\s]{3,}$/;
-      const addressRegex = /^[a-zA-Z0-9À-ỹ\s\/.,-]{5,}$/;
-      const phoneRegex = /^0\d{9}$/;
-
-      // Clear errors
-      clearError(fullnameInput);
-      clearError(addressInput);
-      clearError(phoneInput);
-      clearError(paymentInput);
-
-      // Validate từng trường
-      if (
-        !validateInput(
-          fullnameInput,
-          nameRegex,
-          "Vui lòng nhập họ tên hợp lệ (tối thiểu 3 ký tự)"
-        )
-      ) {
-        isValid = false;
-      }
-
-      if (
-        !validateInput(
-          addressInput,
-          addressRegex,
-          "Địa chỉ không hợp lệ (tối thiểu 5 ký tự)"
-        )
-      ) {
-        isValid = false;
-      }
-
-      if (
-        !validateInput(
-          phoneInput,
-          phoneRegex,
-          "Số điện thoại phải có 10 số và bắt đầu bằng 0"
-        )
-      ) {
-        isValid = false;
-      }
-
-      if (paymentInput.value === "") {
-        showError(paymentInput, "Vui lòng chọn phương thức thanh toán");
+      isValid &= validateInput(
+        inputs.fullname,
+        /^[a-zA-ZÀ-ỹ\s]{3,}$/,
+        "Vui lòng nhập họ tên hợp lệ (tối thiểu 3 ký tự)"
+      );
+      isValid &= validateInput(
+        inputs.address,
+        /^[a-zA-Z0-9À-ỹ\s\/.,-]{5,}$/, // Địa chỉ: chữ, số, ký tự đặc biệt cơ bản, tối thiểu 5 ký tự
+        "Địa chỉ không hợp lệ (tối thiểu 5 ký tự)"
+      );
+      isValid &= validateInput(
+        inputs.phone,
+        /^0\d{9}$/,
+        "Số điện thoại phải có 10 số và bắt đầu bằng 0"
+      );
+      if (inputs.payment.value === "") {
+        showError(inputs.payment, "Vui lòng chọn phương thức thanh toán");
         isValid = false;
       }
 
       if (!isValid) return;
 
-      // Xử lý dữ liệu theo loại thanh toán
       if (isQuickBuy) {
         console.log("Xử lý mua ngay:", quickBuyItems);
-        // Gửi dữ liệu mua ngay đến API hoặc xử lý tại đây
-        quickBuyItems = [];
+        quickBuyItems = []; // Xóa danh sách sản phẩm "Mua ngay" sau khi xử lý
       } else {
         console.log("Xử lý giỏ hàng:", cartItems);
-        // Gửi dữ liệu giỏ hàng đến API hoặc xử lý tại đây
-        cartItems = [];
+        cartItems = []; // Xóa giỏ hàng sau khi thanh toán
         totalAmount = 0;
         updateCart();
       }
 
-      // Hiển thị thông báo và reset
-      const successModal = new bootstrap.Modal(
-        document.getElementById("successModal")
-      );
+      const successModal = new bootstrap.Modal(document.getElementById("successModal"));
       successModal.show();
-      this.reset();
+      this.reset(); // Xóa dữ liệu trong form
       isQuickBuy = false;
-
-      // Đóng modal
-      bootstrap.Modal.getInstance(
-        document.getElementById("checkoutModal")
-      ).hide();
-      setTimeout(() => successModal.hide(), 3000);
+      bootstrap.Modal.getInstance(document.getElementById("checkoutModal")).hide();
+      setTimeout(() => successModal.hide(), 3000); // Ẩn modal thành công sau 3 giây
     });
 
-  // Thêm sự kiện input cho các trường
-  document
-    .querySelectorAll("#paymentForm input, #paymentForm select")
-    .forEach((input) => {
+    document.querySelectorAll("#paymentForm input, #paymentForm select").forEach((input) => {
       input.addEventListener("input", () => {
         clearError(input);
         if (input.id === "checkoutPhone") {
-          input.value = input.value.replace(/\D/g, ""); // Chỉ cho phép nhập số
+          input.value = input.value.replace(/\D/g, ""); // Chỉ cho phép nhập số vào trường phone
         }
       });
     });
+  }
 
-  // Xử lý khi click vào ảnh sản phẩm để mở modal
+  // 7. XỬ LÝ MODAL SẢN PHẨM
   document.querySelectorAll(".product-image").forEach((img) => {
     img.addEventListener("click", function () {
-      let name = this.getAttribute("data-name");
-      let price = this.getAttribute("data-price");
-      let image = this.getAttribute("src");
-      let description = this.getAttribute("data-description");
-      let category = this.getAttribute("data-category"); // Lấy danh mục sản phẩm
-      let images = JSON.parse(this.getAttribute("data-images") || "{}");
+      const data = {
+        name: this.getAttribute("data-name"),
+        price: this.getAttribute("data-price"),
+        image: this.getAttribute("src"),
+        description: this.getAttribute("data-description"),
+        category: this.getAttribute("data-category"),
+        images: JSON.parse(this.getAttribute("data-images") || "{}") // Chuyển chuỗi JSON thành object
+      };
 
-      // Nội dung cơ bản của modal
       let modalContent = `
-            <div class="row">
-                <div class="col-md-5">
-                    <img src="${image}" class="img-fluid" alt="${name}">
-                </div>
-                <div class="col-md-7">
-                    <h4 id="modalProductName">${name}</h4>
-                    <p><strong>Giá:</strong> <span id="modalProductPrice">${parseInt(
-                      price
-                    ).toLocaleString()}</span> đ</p>
-                    <p>${description}</p>`;
+              <div class="row">
+                  <div class="col-md-5">
+                      <img src="${data.image}" class="img-fluid" alt="${data.name}">
+                  </div>
+                  <div class="col-md-7">
+                      <h4 id="modalProductName">${data.name}</h4>
+                      <p><strong>Giá:</strong> <span id="modalProductPrice">${parseInt(data.price).toLocaleString()}</span> đ</p>
+                      <p>${data.description}</p>`;
 
-      // Chỉ hiển thị tùy chọn màu sắc và size nếu là giày hoặc dép
-      if (
-        category === "giay_nam" ||
-        category === "dep_nam" ||
-        category === "giay_nu" ||
-        category === "dep_nu"
-      ) {
+      if (["giay_nam", "dep_nam", "giay_nu", "dep_nu"].includes(data.category)) {
+        // Chỉ hiển thị tùy chọn màu và size cho các danh mục giày dép
         modalContent += `
-                    <div class="mb-3">
-                        <label class="fw-bold">Chọn màu:</label>
-                        <div id="colorOptions" class="d-flex gap-2">
-                            <button class="color-option" data-color="Đen" style="background-color: black;"></button>
-                            <button class="color-option" data-color="Trắng" style="background-color: white; border: 1px solid black;"></button>
-                            <button class="color-option" data-color="Xám" style="background-color: gray;"></button>
-                            <button class="color-option" data-color="Đỏ" style="background-color: brown;"></button>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="fw-bold">Chọn size:</label>
-                        <div id="sizeOptions" class="d-flex gap-2">
-                            <button class="size-option btn btn-outline-primary" data-size="39">39</button>
-                            <button class="size-option btn btn-outline-primary" data-size="40">40</button>
-                            <button class="size-option btn btn-outline-primary" data-size="41">41</button>
-                            <button class="size-option btn btn-outline-primary" data-size="42">42</button>
-                            <button class="size-option btn btn-outline-primary" data-size="43">43</button>
-                        </div>
-                    </div>`;
+                  <div class="mb-3">
+                      <label class="fw-bold">Chọn màu:</label>
+                      <div id="colorOptions" class="d-flex gap-2">
+                          <button class="color-option" data-color="Đen" style="background-color: black;"></button>
+                          <button class="color-option" data-color="Trắng" style="background-color: white; border: 1px solid black;"></button>
+                          <button class="color-option" data-color="Xám" style="background-color: gray;"></button>
+                          <button class="color-option" data-color="Đỏ" style="background-color: brown;"></button>
+                      </div>
+                  </div>
+                  <div class="mb-3">
+                      <label class="fw-bold">Chọn size:</label>
+                      <div id="sizeOptions" class="d-flex gap-2">
+                          <button class="size-option btn btn-outline-primary" data-size="39">39</button>
+                          <button class="size-option btn btn-outline-primary" data-size="40">40</button>
+                          <button class="size-option btn btn-outline-primary" data-size="41">41</button>
+                          <button class="size-option btn btn-outline-primary" data-size="42">42</button>
+                          <button class="size-option btn btn-outline-primary" data-size="43">43</button>
+                      </div>
+                  </div>`;
       }
 
-      // Phần số lượng và nút thêm vào giỏ/mua ngay
       modalContent += `
-      </div>
-      </div>
-      <div class="modal-footer d-flex justify-content-end align-items-center">
-          <label class="fw-bold me-2">Số lượng:</label>
-          <input type="number" id="quantity" class="form-control me-5" value="1" min="1" style="width: 60px;">
-          <button type="button" class="btn btn-primary add-to-cart-modal">Thêm vào giỏ</button>
-          <button type="button" class="btn btn-success buy-now">Mua ngay</button>
-      </div>`;
+                  </div>
+              </div>
+              <div class="modal-footer d-flex justify-content-end align-items-center">
+                  <label class="fw-bold me-2">Số lượng:</label>
+                  <input type="number" id="quantity" class="form-control me-5" value="1" min="1" style="width: 60px;">
+                  <button type="button" class="btn btn-primary add-to-cart-modal">Thêm vào giỏ</button>
+                  <button type="button" class="btn btn-success buy-now">Mua ngay</button>
+              </div>`;
 
-      // Gán nội dung vào modal
       document.getElementById("productModalBody").innerHTML = modalContent;
-
       let modalElement = document.getElementById("productModal");
+      if (!modalElement.modalInstance) {
+        modalElement.modalInstance = new bootstrap.Modal(modalElement); // Khởi tạo modal nếu chưa có
+      }
+      modalElement.modalInstance.show();
 
-      // Cập nhật hình ảnh khi người dùng chọn màu
       document.querySelectorAll(".color-option").forEach((colorButton) => {
         colorButton.addEventListener("click", function () {
           let color = this.getAttribute("data-color");
           let productImage = document.querySelector("#productModalBody img");
-          if (images[color]) {
-            productImage.src = images[color];
+          if (data.images[color]) {
+            productImage.src = data.images[color]; // Cập nhật ảnh sản phẩm theo màu chọn
           }
         });
       });
-
-      // Kiểm tra xem modal đã được khởi tạo trước đó chưa
-      if (!modalElement.modalInstance) {
-        modalElement.modalInstance = new bootstrap.Modal(modalElement);
-      }
-
-      // Hiển thị modal
-      modalElement.modalInstance.show();
     });
   });
 
-  // Xử lý các sự kiện click liên quan đến modal
-  // Hàm lấy giá trị đã chọn hoặc trả về null nếu không có tùy chọn đó
+  // 8. XỬ LÝ SỰ KIỆN CLICK
   const getSelectedOption = (selector) => {
+    // Lấy giá trị của tùy chọn (màu hoặc size) đang được chọn
     const option = document.querySelector(`${selector}.active`);
     return option ? option.dataset.color || option.dataset.size : null;
   };
@@ -579,111 +538,72 @@ document.addEventListener("DOMContentLoaded", function () {
     const target = event.target;
 
     if (target.matches(".buy-now, .add-to-cart-modal")) {
-      event.stopImmediatePropagation();
+      event.stopImmediatePropagation(); // Ngăn các sự kiện click khác can thiệp
+      const product = {
+        name: document.getElementById("modalProductName").innerText,
+        price: parseInt(document.getElementById("modalProductPrice").innerText.replace(/\D/g, "")),
+        quantity: parseInt(document.getElementById("quantity").value),
+        image: document.querySelector("#productModalBody img").src,
+        color: getSelectedOption(".color-option") || "",
+        size: getSelectedOption(".size-option") || ""
+      };
 
-      const productName = document.getElementById("modalProductName").innerText;
-      const price = parseInt(
-        document
-          .getElementById("modalProductPrice")
-          .innerText.replace(/\D/g, "")
-      );
-      const quantity = parseInt(document.getElementById("quantity").value);
-      const image = document.querySelector("#productModalBody img").src;
-
-      // Kiểm tra xem sản phẩm có tùy chọn màu/size không
       const hasColorOption = document.querySelector(".color-option") !== null;
       const hasSizeOption = document.querySelector(".size-option") !== null;
 
-      const color = hasColorOption ? getSelectedOption(".color-option") : "";
-      const size = hasSizeOption ? getSelectedOption(".size-option") : "";
-
-      // Nếu có tùy chọn nhưng chưa chọn thì cảnh báo
-      if ((hasColorOption && !color) || (hasSizeOption && !size)) {
-        // Hiển thị modal cảnh báo
-        const errorModal = new bootstrap.Modal(
-          document.getElementById("errorModal")
-        );
+      // Kiểm tra xem người dùng đã chọn màu và size chưa (nếu có tùy chọn)
+      if ((hasColorOption && !product.color) || (hasSizeOption && !product.size)) {
+        const errorModal = new bootstrap.Modal(document.getElementById("errorModal"));
         errorModal.show();
-
-        // Tự động ẩn sau 2.5 giây
-        setTimeout(() => {
-          errorModal.hide();
-        }, 2500);
+        setTimeout(() => errorModal.hide(), 2500);
         return;
       }
 
-      // Xây dựng mô tả sản phẩm
-      let productDetails = `🛒 Đặt hàng thành công!\n\nBạn đã đặt ${quantity} sản phẩm:\n"${productName}"`;
-      let attributes = [];
-
-      if (color) attributes.push(`Màu: ${color}`);
-      if (size) attributes.push(`Size: ${size}`);
-
-      if (attributes.length > 0) {
-        productDetails += `\n${attributes.join(" - ")}`;
-      }
-
-      productDetails += `\nGiá: ${price.toLocaleString()} đ`;
-
       if (target.classList.contains("buy-now")) {
-        // Xử lý mua ngay
-        quickBuyItems = [
-          {
-            name: productName,
-            price,
-            color: color || null,
-            size: size || null,
-            quantity,
-            image,
-          },
-        ];
-
+        quickBuyItems = [product];
         isQuickBuy = true;
         showCheckoutModal(quickBuyItems);
-        bootstrap.Modal.getInstance(
-          document.getElementById("productModal")
-        ).hide();
+        bootstrap.Modal.getInstance(document.getElementById("productModal")).hide();
       } else {
-        // Thêm vào giỏ hàng
-        cartItems.push({
-          name: productName,
-          price,
-          color,
-          size,
-          quantity,
-          image,
-        });
-        totalAmount += price * quantity;
+        cartItems.push(product);
+        totalAmount += product.price * product.quantity;
         updateCart();
-
-        // Ẩn modal sản phẩm
-        const productModal = bootstrap.Modal.getInstance(
-          document.getElementById("productModal")
-        );
+        const productModal = bootstrap.Modal.getInstance(document.getElementById("productModal"));
         if (productModal) productModal.hide();
-
-        // Hiển thị modal thanh toán
-        const cartNotification = new bootstrap.Modal(
-          document.getElementById("cartNotification")
-        );
+        const cartNotification = new bootstrap.Modal(document.getElementById("cartNotification"));
         cartNotification.show();
-
-        // Tự động ẩn sau 2 giây
-        setTimeout(() => {
-          cartNotification.hide();
-        }, 2000);
-
-        cart.style.display = "block";
+        setTimeout(() => cartNotification.hide(), 2000); // Thông báo thêm vào giỏ hàng trong 2 giây
+        cartElements.cart.style.display = "block";
       }
     }
 
     if (target.matches(".color-option, .size-option")) {
+      // Xử lý chọn màu hoặc size: chỉ cho phép chọn 1 tùy chọn tại 1 thời điểm
       document
-        .querySelectorAll(
-          target.matches(".color-option") ? ".color-option" : ".size-option"
-        )
+        .querySelectorAll(target.matches(".color-option") ? ".color-option" : ".size-option")
         .forEach((b) => b.classList.remove("active"));
       target.classList.add("active");
     }
+
+    if (target.classList.contains("delete-user")) {
+      const index = target.getAttribute("data-index");
+      if (confirm("Bạn có chắc chắn muốn xóa người dùng này không?")) {
+        let users = JSON.parse(localStorage.getItem("users")) || [];
+        users.splice(index, 1); // Xóa người dùng khỏi danh sách
+        localStorage.setItem("users", JSON.stringify(users));
+        renderUserList();
+        alert("Xóa người dùng thành công!");
+      }
+    }
   });
+
+  // 9. KHỞI TẠO CAROUSEL
+  let carouselElement = document.querySelector("#carouselId");
+  if (carouselElement) {
+    new bootstrap.Carousel(carouselElement, {
+      interval: 3000, // Chuyển slide sau 3 giây
+      pause: "hover", // Tạm dừng khi hover chuột
+      wrap: true // Quay lại slide đầu khi đến cuối
+    });
+  }
 });

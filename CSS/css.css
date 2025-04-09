@@ -1,10 +1,12 @@
+/* 1. RESET VÀ CÀI ĐẶT CHUNG */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  /* Đảm bảo padding và border không làm tăng kích thước phần tử */
 }
 
-/* Định dạng cho giỏ hàng */
+/* 2. ĐỊNH DẠNG CHO GIỎ HÀNG */
 .cart {
   position: fixed;
   top: 80px;
@@ -16,6 +18,7 @@
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   display: none;
   z-index: 1000;
+  /* Đảm bảo giỏ hàng nằm trên các phần tử khác */
   margin: 0;
   padding: 10px;
 }
@@ -40,7 +43,7 @@
   border-bottom: 1px solid #eee;
 }
 
-/* Định dạng hình ảnh trang chủ */
+/* 3. ĐỊNH DẠNG HÌNH ẢNH TRANG CHỦ (CAROUSEL) */
 #carouselId {
   margin-top: 89px;
   justify-content: center;
@@ -56,7 +59,7 @@
   letter-spacing: 2px;
 }
 
-/* Định dạng color trong model sản phẩm */
+/* 4. ĐỊNH DẠNG TÙY CHỌN MÀU TRONG MODAL SẢN PHẨM */
 .color-option {
   width: 40px;
   height: 40px;
@@ -69,15 +72,18 @@
 
 .color-option:hover {
   transform: scale(1.05);
+  /* Phóng to nhẹ khi hover */
 }
 
 .color-option.active {
   border: 3px solid red !important;
 }
 
-/* Định dạng hover cho các sản phẩm */
+/* 5. ĐỊNH DẠNG HIỆU ỨNG HOVER CHO SẢN PHẨM */
 .product-item {
+  margin: 0px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  /* Hiệu ứng chuyển đổi mượt mà */
 }
 
 .product-item:hover {
@@ -85,45 +91,52 @@
   box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.2);
 }
 
-/* Định dạng hiệu ứng rơi xuống */
+/* 6. ĐỊNH DẠNG HIỆU ỨNG RƠI XUỐNG */
 .fade-in {
   opacity: 0;
   transform: translateY(-20px);
+  /* Dịch lên 20px ban đầu */
   animation: fadeInDown 1s ease-out forwards;
+  /* Chạy animation 1 lần, giữ trạng thái cuối */
 }
 
 @keyframes fadeInDown {
   from {
     opacity: 0;
     transform: translateY(-20px);
+    /* Điểm bắt đầu: ẩn và dịch lên */
   }
 
   to {
     opacity: 1;
     transform: translateY(0);
+    /* Điểm kết thúc: hiện và về vị trí ban đầu */
   }
 }
 
-/* Định dạng hiệu ứng xuất hiện */
+/* 7. ĐỊNH DẠNG HIỆU ỨNG XUẤT HIỆN VÀ PHÓNG TO */
 .fade-scale {
   opacity: 0;
   transform: scale(0.8);
   animation: fadeScaleUp 0.8s ease-out forwards;
+  /* Chạy animation 1 lần */
 }
 
 @keyframes fadeScaleUp {
   from {
     opacity: 0;
     transform: scale(0.95);
+    /* Điểm bắt đầu: ẩn và thu nhỏ */
   }
 
   to {
     opacity: 1;
     transform: scale(1);
+    /* Điểm kết thúc: hiện và kích thước bình thường */
   }
 }
 
-/* Định dạng header */
+/* 8. ĐỊNH DẠNG HEADER */
 header {
   transition: box-shadow 0.3s ease;
 }
@@ -132,7 +145,6 @@ header:hover {
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Định dạng cho các mục trong header */
 ul li {
   font-size: 17px;
   transition: transform 0.3s ease, font-weight 0.3s ease;
@@ -143,7 +155,6 @@ ul li:hover,
   transform: scale(1.05);
 }
 
-/* Nếu mục đó đang ở trang hiện tại, nó sẽ in đậm */
 ul li.active {
   font-weight: bold;
 }
@@ -157,24 +168,22 @@ ul li.active {
   font-size: 20px;
 }
 
-/* Định dạng cho footer */
+/* 9. ĐỊNH DẠNG FOOTER */
 .list-unstyled a {
   text-decoration: none;
   transition: text-decoration 0.2s ease-in-out;
+  /* Hiệu ứng gạch chân mượt mà */
 }
 
 .list-unstyled a:hover {
   text-decoration: underline;
 }
 
-.product-item {
-  margin: 0px;
-}
-
-/* Thêm style mới cho modal thông báo */
+/* 10. ĐỊNH DẠNG MODAL THÔNG BÁO */
 #cartNotification .modal-content {
   border: none;
   background: rgba(255, 255, 255, 0.95);
+  /* Nền trắng mờ nhẹ */
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 }
 
@@ -192,16 +201,7 @@ ul li.active {
   padding: 2rem;
 }
 
-@keyframes slideIn {
-  from {
-    transform: translateX(100%);
-  }
-  to {
-    transform: translateX(0);
-  }
-}
-
-/*Thêm style cho model thanh toán*/
+/* 11. ĐỊNH DẠNG MODAL THANH TOÁN */
 #checkout-items img {
   object-fit: cover;
   border-radius: 4px;
@@ -209,13 +209,44 @@ ul li.active {
 
 #checkoutModal .modal-body {
   max-height: 70vh;
+  /* Giới hạn chiều cao tối đa */
   overflow-y: auto;
+  /* Thêm thanh cuộn dọc nếu nội dung dài */
 }
 
 #successModal .modal-content {
   border: 2px solid #28a745;
+  border-radius: 15px;
 }
 
+#successModal .fa-check-circle {
+  animation: bounce 1s;
+  /* Hiệu ứng nảy cho icon check */
+}
+
+@keyframes bounce {
+
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+    /* Trở về vị trí ban đầu */
+  }
+
+  40% {
+    transform: translateY(-30px);
+    /* Nảy lên cao nhất */
+  }
+
+  60% {
+    transform: translateY(-15px);
+    /* Nảy lần thứ hai */
+  }
+}
+
+/* 12. ĐỊNH DẠNG VALIDATION FORM */
 .invalid-feedback {
   display: none;
   color: #dc3545;
@@ -227,40 +258,37 @@ ul li.active {
   border-color: #dc3545 !important;
 }
 
-.is-invalid ~ .invalid-feedback {
+.is-invalid~.invalid-feedback {
   display: block;
+  /* Hiển thị thông báo lỗi khi input không hợp lệ */
 }
 
-/* Thêm vào file css.css */
+/* 13. ĐIỀU CHỈNH Z-INDEX CHO MODAL */
 .modal-backdrop {
   z-index: 1040 !important;
+  /* Đảm bảo backdrop nằm dưới modal */
 }
 
 .modal {
   z-index: 1050 !important;
+  /* Modal nằm trên backdrop */
 }
 
-#successModal .modal-content {
-  border: 2px solid #28a745;
-  border-radius: 15px;
+/* 14. HIỆU ỨNG TRƯỢT VÀO */
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    /* Bắt đầu từ ngoài màn hình bên phải */
+  }
+
+  to {
+    transform: translateX(0);
+    /* Kết thúc tại vị trí bình thường */
+  }
 }
 
-#successModal .fa-check-circle {
-  animation: bounce 1s;
-}
-
-@keyframes bounce {
-  0%,
-  20%,
-  50%,
-  80%,
-  100% {
-    transform: translateY(0);
-  }
-  40% {
-    transform: translateY(-30px);
-  }
-  60% {
-    transform: translateY(-15px);
-  }
+.show-cart {
+  display: block !important;
+  animation: slideIn 0.5s ease-out;
+  /* Giỏ hàng trượt vào từ bên phải trong 0.5 giây */
 }
